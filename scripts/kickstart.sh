@@ -134,35 +134,41 @@ validate_environment() {
 # ============================================================================
 scaffold_web() {
   log_step "Step 2/8: Scaffolding Next.js 16 (Web)"
-  pnpm create next-app@latest "$PROJECT_NAME" \
+  pnpm dlx --allow-build=sharp create-next-app@latest "$PROJECT_NAME" \
     --typescript --tailwind --app --src-dir --import-alias "@/*" --use-pnpm \
     --no-eslint --no-turbopack
   cd "$PROJECT_NAME"
   PROJECT_DIR="$(pwd)"
+  ensure_workspace_build_approvals
   log_info "Adding NativeWind v4..."
-  pnpm add nativewind@latest react-native-web
+  pnpm approve-builds --all >/dev/null 2>&1 || true
+  pnpm add --allow-build=sharp nativewind@latest react-native-web
   log_success "Web scaffold complete"
 }
 
 scaffold_mobile() {
   log_step "Step 2/8: Scaffolding Expo SDK 55 (Mobile)"
-  pnpm create expo-app@latest "$PROJECT_NAME" --template blank-typescript --yes
+  pnpm dlx --allow-build=sharp create-expo-app@latest "$PROJECT_NAME" --template blank-typescript --yes
   cd "$PROJECT_NAME"
   PROJECT_DIR="$(pwd)"
+  ensure_workspace_build_approvals
   log_info "Adding NativeWind v4..."
-  pnpm add nativewind@latest
-  pnpm add -D tailwindcss@^3
+  pnpm approve-builds --all >/dev/null 2>&1 || true
+  pnpm add --allow-build=sharp nativewind@latest
+  pnpm add -D --allow-build=sharp tailwindcss@^3
   log_success "Mobile scaffold complete"
 }
 
 scaffold_universal() {
   log_step "Step 2/8: Scaffolding Universal (Turborepo + Solito 5)"
-  pnpm create solito-app@latest "$PROJECT_NAME"
+  pnpm dlx --allow-build=sharp create-solito-app@latest "$PROJECT_NAME"
   cd "$PROJECT_NAME"
   PROJECT_DIR="$(pwd)"
   normalize_universal_package_manager
+  ensure_workspace_build_approvals
   log_info "Adding NativeWind v4..."
-  pnpm add -w nativewind@latest
+  pnpm approve-builds --all >/dev/null 2>&1 || true
+  pnpm add -w --allow-build=sharp nativewind@latest
   log_success "Universal scaffold complete"
 }
 
@@ -181,7 +187,26 @@ packages:
   - 'apps/*'
   - 'packages/*'
 EOF
+  pnpm approve-builds --all >/dev/null 2>&1 || true
   pnpm install
+}
+
+ensure_workspace_build_approvals() {
+  if [ ! -f pnpm-workspace.yaml ]; then
+    return 0
+  fi
+
+  awk '
+    BEGIN { skipping = 0 }
+    /^allowBuilds:/ || /^ignoredBuiltDependencies:/ { skipping = 1; next }
+    skipping && $0 !~ /^[A-Za-z0-9_-]+:/ && $0 != "" { next }
+    { skipping = 0; print }
+  ' pnpm-workspace.yaml > pnpm-workspace.yaml.tmp
+  {
+    cat pnpm-workspace.yaml.tmp
+    printf '\nallowBuilds:\n  sharp: true\n  unrs-resolver: true\n'
+  } > pnpm-workspace.yaml
+  rm -f pnpm-workspace.yaml.tmp
 }
 
 # ============================================================================
@@ -288,10 +313,11 @@ install_database_and_auth() {
   log_step "Step 5/8: Installing database & auth"
 
   log_info "Adding Supabase..."
+  pnpm approve-builds --all >/dev/null 2>&1 || true
   if [ "$TYPE" = "universal" ]; then
-    pnpm add -w @supabase/supabase-js
+    pnpm add -w --allow-build=sharp @supabase/supabase-js
   else
-    pnpm add @supabase/supabase-js
+    pnpm add --allow-build=sharp @supabase/supabase-js
   fi
   mkdir -p lib
   mkdir -p .design-staging
@@ -317,9 +343,9 @@ EOF
 
   log_info "Adding Better-Auth (passkey/FaceID-ready)..."
   if [ "$TYPE" = "universal" ]; then
-    pnpm add -w better-auth
+    pnpm add -w --allow-build=sharp better-auth
   else
-    pnpm add better-auth
+    pnpm add --allow-build=sharp better-auth
   fi
   cat > lib/auth.ts <<'EOF'
 import { betterAuth } from 'better-auth'
@@ -347,11 +373,11 @@ EOF
   if [ "$TYPE" = "mobile" ] || [ "$TYPE" = "universal" ]; then
     log_info "Adding WatermelonDB (offline-first)..."
     if [ "$TYPE" = "universal" ]; then
-      pnpm add -w @nozbe/watermelondb
-      pnpm add -w -D @babel/plugin-proposal-decorators
+      pnpm add -w --allow-build=sharp @nozbe/watermelondb
+      pnpm add -w -D --allow-build=sharp @babel/plugin-proposal-decorators
     else
-      pnpm add @nozbe/watermelondb
-      pnpm add -D @babel/plugin-proposal-decorators
+      pnpm add --allow-build=sharp @nozbe/watermelondb
+      pnpm add -D --allow-build=sharp @babel/plugin-proposal-decorators
     fi
 
     mkdir -p model
@@ -422,9 +448,9 @@ setup_guardrails() {
 
   log_info "Adding Husky + lint-staged + Vitest + Playwright + Sandcastle..."
   if [ "$TYPE" = "universal" ]; then
-    pnpm add -w -D husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
+    pnpm add -w -D --allow-build=sharp husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
   else
-    pnpm add -D husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
+    pnpm add -D --allow-build=sharp husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
   fi
 
   pnpm dlx husky init >/dev/null 2>&1 || true

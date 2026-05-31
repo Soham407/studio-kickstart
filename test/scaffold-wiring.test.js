@@ -154,7 +154,7 @@ test('normalizes Solito universal projects to pnpm', async () => {
 })
 
 test('uses pnpm workspace root flags for universal dependency installs', () => {
-  assert.deepEqual(pnpmAddArgs('universal', ['nativewind@latest']), ['add', '-w', 'nativewind@latest'])
-  assert.deepEqual(pnpmAddArgs('universal', ['vitest'], { dev: true }), ['add', '-w', '-D', 'vitest'])
+  assert.deepEqual(pnpmAddArgs('universal', ['nativewind@latest']), ['add', '-w', '--allow-build=sharp', '--allow-build=msgpackr-extract', '--allow-build=unrs-resolver', 'nativewind@latest'])
+  assert.deepEqual(pnpmAddArgs('universal', ['vitest'], { dev: true }), ['add', '-w', '-D', '--allow-build=sharp', '--allow-build=msgpackr-extract', '--allow-build=unrs-resolver', 'vitest'])
   assert.deepEqual(pnpmAddArgs('web', ['nativewind@latest']), ['add', 'nativewind@latest'])
 })
