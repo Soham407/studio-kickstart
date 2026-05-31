@@ -42,26 +42,33 @@ Studio-Grade **{{PROJECT_TYPE}}** project bootstrapped via `kickstart`.
 - **Unit Tests:** Vitest (run: `pnpm test`)
 - **E2E Tests:** Playwright (run: `pnpm test:e2e`)
 - **Types:** strict TypeScript (run: `pnpm typecheck`)
+- **Agent PR Review:** CodeRabbit audits Sandcastle-generated PRs before merge
+
+---
+
+## Design Staging Bridge
+
+`.design-staging/` is for raw UI exports, screenshots, and handoff files such as `index.html` from Open Design. Treat files in this folder as staging inputs for the Artifact-Pro Open Design skill before translating them into production components.
 
 ---
 
 ## Skills Library
 
-This project ships with studio skills at `.claude/skills/` by default. Install individual skills for other agents with:
+This project ships with portable skills at `.agents/skills/` and a Claude Code adapter at `.claude/skills/`. Install individual skills with:
 
 ```bash
 kickstart skills install <skill> --agent codex
-kickstart skills install <skill> --agent gemini
+kickstart skills install <skill> --agent pi
 ```
 
 ### `architecture/`
 Engineering frameworks and processes:
-- `matt-pocock-tdd/` — Red-green-refactor TDD loops
-- `matt-pocock-grill-with-docs/` — Challenge plan against domain model
-- `matt-pocock-diagnose/` — Disciplined debugging loop
-- `matt-pocock-improve-codebase-architecture/` — Find deepening opportunities
-- `matt-pocock-to-prd/`, `matt-pocock-to-issues/` — Plan → PRD → issues
-- `matt-pocock-triage/`, `matt-pocock-zoom-out/`, `matt-pocock-prototype/`
+- `tdd/` — Red-green-refactor TDD loops
+- `grill-with-docs/` — Challenge plan against domain model
+- `diagnose/` — Disciplined debugging loop
+- `improve-codebase-architecture/` — Find deepening opportunities
+- `to-prd/`, `to-issues/` — Plan → PRD → issues
+- `triage/`, `zoom-out/`, `prototype/`
 - `superpowers-framework/` — Master framework
 - `context7-mcp/` — Live API documentation
 - `manual-sdd/` — System design documents
@@ -71,16 +78,28 @@ Engineering frameworks and processes:
 ### `coding/`
 Framework-specific patterns:
 - `matt-pocock-typescript/` — Advanced TypeScript
-- `watermelon-sync/` — WatermelonDB offline-first architecture
+- `watermelon-architect/` — WatermelonDB offline-first architecture
 
 ### `business/`
 Studio operations:
 - `shannon-security/` — Security audit framework (used in pre-commit)
 - `agentic-seo/` — AI-driven SEO
-- `marp-pitching/`, `email-campaigns/`, `spider-king-lead-extraction/`
+- `marp-slides/`, `email-campaigns/`, `spider-king-lead-extraction/`
 
 ### `design/`
-- `hue-design-tokens/` — Design tokens & Tailwind themes
+- `hue/` — Design tokens & Tailwind themes
+- `artifact-pro-open-design/` — Open Design JSON/export bridge to NativeWind v4
+
+---
+
+## Production Pipeline
+
+Sandcastle-generated PRs must be reviewed before merge. Use CodeRabbit as the automated PR audit layer for logic integrity, regression risk, and test coverage.
+
+- Sandcastle may open or prepare implementation PRs.
+- CodeRabbit should audit those PRs before human merge.
+- Do not merge Sandcastle-generated changes until the CodeRabbit review has been read and any material logic or coverage findings are resolved.
+- Treat CodeRabbit as a review aid, not a replacement for maintainer judgment.
 
 ---
 

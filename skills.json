@@ -1,15 +1,28 @@
 {
-  "generatedAt": "2026-05-08T05:35:18.541Z",
+  "generatedAt": "2026-05-31T13:24:27.703Z",
   "skills": [
     {
       "name": "antivibe",
-      "slug": "antivibe-logic",
+      "slug": "antivibe",
       "category": "architecture",
       "type": "skill",
       "description": "Anti-vibecoding learning framework. Generate detailed explanations of code written by AI with curated external resources for deeper learning. Use when the user wants to understand WHAT and WHY behind AI-generated code, not just accept it.",
       "tags": "",
-      "path": "architecture/antivibe-logic/SKILL.md",
-      "readme": "architecture/antivibe-logic/README.md",
+      "path": "architecture/antivibe/SKILL.md",
+      "readme": "architecture/antivibe/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "caveman",
+      "slug": "caveman",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman.",
+      "tags": "",
+      "path": "architecture/caveman/SKILL.md",
+      "readme": null,
       "supportedAgents": [
         "claude"
       ]
@@ -28,26 +41,13 @@
       ]
     },
     {
-      "name": "caveman",
-      "slug": "matt-pocock-caveman",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman.",
-      "tags": "",
-      "path": "architecture/matt-pocock-caveman/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
       "name": "diagnose",
-      "slug": "matt-pocock-diagnose",
+      "slug": "diagnose",
       "category": "architecture",
       "type": "skill",
       "description": "Disciplined diagnosis loop for hard bugs and performance regressions. Reproduce → minimise → hypothesise → instrument → fix → regression-test. Use when user says \"diagnose this\" / \"debug this\", reports a bug, says something is broken/throwing/failing, or describes a performance regression.",
       "tags": "",
-      "path": "architecture/matt-pocock-diagnose/SKILL.md",
+      "path": "architecture/diagnose/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -55,12 +55,12 @@
     },
     {
       "name": "git-guardrails-claude-code",
-      "slug": "matt-pocock-git-guardrails-claude-code",
+      "slug": "git-guardrails-claude-code",
       "category": "architecture",
       "type": "skill",
       "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
       "tags": "",
-      "path": "architecture/matt-pocock-git-guardrails-claude-code/SKILL.md",
+      "path": "architecture/git-guardrails-claude-code/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -68,12 +68,12 @@
     },
     {
       "name": "grill-me",
-      "slug": "matt-pocock-grill-me",
+      "slug": "grill-me",
       "category": "architecture",
       "type": "skill",
       "description": "Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use when user wants to stress-test a plan, get grilled on their design, or mentions \"grill me\".",
       "tags": "",
-      "path": "architecture/matt-pocock-grill-me/SKILL.md",
+      "path": "architecture/grill-me/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -81,12 +81,12 @@
     },
     {
       "name": "grill-with-docs",
-      "slug": "matt-pocock-grill-with-docs",
+      "slug": "grill-with-docs",
       "category": "architecture",
       "type": "skill",
       "description": "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.",
       "tags": "",
-      "path": "architecture/matt-pocock-grill-with-docs/SKILL.md",
+      "path": "architecture/grill-with-docs/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -94,25 +94,38 @@
     },
     {
       "name": "improve-codebase-architecture",
-      "slug": "matt-pocock-improve-codebase-architecture",
+      "slug": "improve-codebase-architecture",
       "category": "architecture",
       "type": "skill",
       "description": "Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.",
       "tags": "",
-      "path": "architecture/matt-pocock-improve-codebase-architecture/SKILL.md",
+      "path": "architecture/improve-codebase-architecture/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
       ]
     },
     {
+      "name": "manual-sdd",
+      "slug": "manual-sdd",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Use when planning or delivering work with a spec-driven development process, including requirements, implementation plans, verification, and review.",
+      "tags": "",
+      "path": "architecture/manual-sdd/SKILL.md",
+      "readme": "architecture/manual-sdd/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
       "name": "migrate-to-shoehorn",
-      "slug": "matt-pocock-migrate-to-shoehorn",
+      "slug": "migrate-to-shoehorn",
       "category": "architecture",
       "type": "skill",
       "description": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
       "tags": "",
-      "path": "architecture/matt-pocock-migrate-to-shoehorn/SKILL.md",
+      "path": "architecture/migrate-to-shoehorn/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -120,12 +133,12 @@
     },
     {
       "name": "prototype",
-      "slug": "matt-pocock-prototype",
+      "slug": "prototype",
       "category": "architecture",
       "type": "skill",
       "description": "Build a throwaway prototype to flush out a design before committing to it. Routes between two branches — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. Use when the user wants to prototype, sanity-check a data model or state machine, mock up a UI, explore design options, or says \"prototype this\", \"let me play with it\", \"try a few designs\".",
       "tags": "",
-      "path": "architecture/matt-pocock-prototype/SKILL.md",
+      "path": "architecture/prototype/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -133,12 +146,12 @@
     },
     {
       "name": "scaffold-exercises",
-      "slug": "matt-pocock-scaffold-exercises",
+      "slug": "scaffold-exercises",
       "category": "architecture",
       "type": "skill",
       "description": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
       "tags": "",
-      "path": "architecture/matt-pocock-scaffold-exercises/SKILL.md",
+      "path": "architecture/scaffold-exercises/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -146,12 +159,12 @@
     },
     {
       "name": "setup-matt-pocock-skills",
-      "slug": "matt-pocock-setup-matt-pocock-skills",
+      "slug": "setup-matt-pocock-skills",
       "category": "architecture",
       "type": "skill",
       "description": "Sets up an `## Agent skills` block in AGENTS.md/CLAUDE.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), triage label vocabulary, and domain doc layout. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, `improve-codebase-architecture`, or `zoom-out` — or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.",
       "tags": "",
-      "path": "architecture/matt-pocock-setup-matt-pocock-skills/SKILL.md",
+      "path": "architecture/setup-matt-pocock-skills/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -159,12 +172,12 @@
     },
     {
       "name": "setup-pre-commit",
-      "slug": "matt-pocock-setup-pre-commit",
+      "slug": "setup-pre-commit",
       "category": "architecture",
       "type": "skill",
       "description": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
       "tags": "",
-      "path": "architecture/matt-pocock-setup-pre-commit/SKILL.md",
+      "path": "architecture/setup-pre-commit/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -172,77 +185,12 @@
     },
     {
       "name": "tdd",
-      "slug": "matt-pocock-tdd",
+      "slug": "tdd",
       "category": "architecture",
       "type": "skill",
       "description": "Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions \"red-green-refactor\", wants integration tests, or asks for test-first development.",
       "tags": "",
-      "path": "architecture/matt-pocock-tdd/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
-      "name": "to-issues",
-      "slug": "matt-pocock-to-issues",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. Use when user wants to convert a plan into issues, create implementation tickets, or break down work into issues.",
-      "tags": "",
-      "path": "architecture/matt-pocock-to-issues/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
-      "name": "to-prd",
-      "slug": "matt-pocock-to-prd",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.",
-      "tags": "",
-      "path": "architecture/matt-pocock-to-prd/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
-      "name": "triage",
-      "slug": "matt-pocock-triage",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Triage issues through a state machine driven by triage roles. Use when user wants to create an issue, triage issues, review incoming bugs or feature requests, prepare issues for an AFK agent, or manage issue workflow.",
-      "tags": "",
-      "path": "architecture/matt-pocock-triage/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
-      "name": "write-a-skill",
-      "slug": "matt-pocock-write-a-skill",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.",
-      "tags": "",
-      "path": "architecture/matt-pocock-write-a-skill/SKILL.md",
-      "readme": null,
-      "supportedAgents": [
-        "claude"
-      ]
-    },
-    {
-      "name": "zoom-out",
-      "slug": "matt-pocock-zoom-out",
-      "category": "architecture",
-      "type": "skill",
-      "description": "Tell the agent to zoom out and give broader context or a higher-level perspective. Use when you're unfamiliar with a section of code or need to understand how it fits into the bigger picture.",
-      "tags": "",
-      "path": "architecture/matt-pocock-zoom-out/SKILL.md",
+      "path": "architecture/tdd/SKILL.md",
       "readme": null,
       "supportedAgents": [
         "claude"
@@ -262,6 +210,45 @@
       ]
     },
     {
+      "name": "to-issues",
+      "slug": "to-issues",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices. Use when user wants to convert a plan into issues, create implementation tickets, or break down work into issues.",
+      "tags": "",
+      "path": "architecture/to-issues/SKILL.md",
+      "readme": null,
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "to-prd",
+      "slug": "to-prd",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.",
+      "tags": "",
+      "path": "architecture/to-prd/SKILL.md",
+      "readme": null,
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "triage",
+      "slug": "triage",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Triage issues through a state machine driven by triage roles. Use when user wants to create an issue, triage issues, review incoming bugs or feature requests, prepare issues for an AFK agent, or manage issue workflow.",
+      "tags": "",
+      "path": "architecture/triage/SKILL.md",
+      "readme": null,
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
       "name": "usage-limit-reducer",
       "slug": "usage-limit-reducer",
       "category": "architecture",
@@ -270,6 +257,45 @@
       "tags": "",
       "path": "architecture/usage-limit-reducer/SKILL.md",
       "readme": "architecture/usage-limit-reducer/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "write-a-skill",
+      "slug": "write-a-skill",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.",
+      "tags": "",
+      "path": "architecture/write-a-skill/SKILL.md",
+      "readme": null,
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "zoom-out",
+      "slug": "zoom-out",
+      "category": "architecture",
+      "type": "skill",
+      "description": "Tell the agent to zoom out and give broader context or a higher-level perspective. Use when you're unfamiliar with a section of code or need to understand how it fits into the bigger picture.",
+      "tags": "",
+      "path": "architecture/zoom-out/SKILL.md",
+      "readme": null,
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "agentic-seo",
+      "slug": "agentic-seo",
+      "category": "business",
+      "type": "skill",
+      "description": "Use when auditing or improving documentation and websites for discoverability, parseability, and usefulness to AI coding agents.",
+      "tags": "",
+      "path": "business/agentic-seo/SKILL.md",
+      "readme": "business/agentic-seo/README.md",
       "supportedAgents": [
         "claude"
       ]
@@ -289,16 +315,68 @@
     },
     {
       "name": "marp-slides",
-      "slug": "marp-pitching",
+      "slug": "marp-slides",
       "category": "business",
       "type": "skill",
       "description": "Create beautiful MARP presentation decks with SVG charts, interactive elements, dashboard components, animations, dark/light themes. Triggers on 'marp', 'slides', 'presentation', 'deck'.",
       "tags": "",
-      "path": "business/marp-pitching/SKILL.md",
-      "readme": "business/marp-pitching/README.md",
+      "path": "business/marp-slides/SKILL.md",
+      "readme": "business/marp-slides/README.md",
       "supportedAgents": [
         "claude",
         "cursor"
+      ]
+    },
+    {
+      "name": "shannon-security",
+      "slug": "shannon-security",
+      "category": "business",
+      "type": "skill",
+      "description": "Use when running or evaluating white-box security testing for web applications and APIs with Shannon Lite or Shannon Pro.",
+      "tags": "",
+      "path": "business/shannon-security/SKILL.md",
+      "readme": "business/shannon-security/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "spider-king-lead-extraction",
+      "slug": "spider-king-lead-extraction",
+      "category": "business",
+      "type": "skill",
+      "description": "Use when reverse engineering a web protocol or restoring dynamic request state for a reproducible browser-independent data collection workflow.",
+      "tags": "",
+      "path": "business/spider-king-lead-extraction/SKILL.md",
+      "readme": "business/spider-king-lead-extraction/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "matt-pocock-typescript",
+      "slug": "matt-pocock-typescript",
+      "category": "coding",
+      "type": "skill",
+      "description": "Use when applying Matt Pocock's TypeScript engineering workflows or setting up the bundled TypeScript-focused agent skills.",
+      "tags": "",
+      "path": "coding/matt-pocock-typescript/SKILL.md",
+      "readme": "coding/matt-pocock-typescript/README.md",
+      "supportedAgents": [
+        "claude"
+      ]
+    },
+    {
+      "name": "watermelon-architect",
+      "slug": "watermelon-architect",
+      "category": "coding",
+      "type": "skill",
+      "description": "Use when designing or debugging offline-first synchronization with WatermelonDB, including schema, conflict resolution, pull, and push behavior.",
+      "tags": "",
+      "path": "coding/watermelon-architect/SKILL.md",
+      "readme": "coding/watermelon-architect/README.md",
+      "supportedAgents": [
+        "claude"
       ]
     },
     {
@@ -316,13 +394,13 @@
     },
     {
       "name": "hue",
-      "slug": "hue-design-tokens",
+      "slug": "hue",
       "category": "design",
       "type": "skill",
       "description": "Meta-skill that generates new design language skills. Works on Claude Code and Codex. Use when the user says 'create a design skill', 'generate design language', 'new design system skill', 'design skill inspired by X', 'design skill from this screenshot', '/hue', or 'use hue'. Also triggers for 'remix my design skill' or 'make my skill more X'.",
       "tags": "",
-      "path": "design/hue-design-tokens/SKILL.md",
-      "readme": "design/hue-design-tokens/README.md",
+      "path": "design/hue/SKILL.md",
+      "readme": "design/hue/README.md",
       "supportedAgents": [
         "claude",
         "codex",

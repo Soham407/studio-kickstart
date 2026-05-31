@@ -24,6 +24,8 @@ BOLD=$'\033[1m'
 NC=$'\033[0m'
 
 STUDIO_SKILLS_REPO="https://github.com/soham407/studio_skills.git"
+SKILLS_REF="${SKILLS_REF:-v1.1.0}"
+SKILL_PACKS="${SKILL_PACKS:-essential}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMPLATES_DIR="$SCRIPT_DIR/templates"
 TEMP_DIR=""
@@ -158,7 +160,28 @@ scaffold_universal() {
   pnpm create solito-app@latest "$PROJECT_NAME"
   cd "$PROJECT_NAME"
   PROJECT_DIR="$(pwd)"
+  normalize_universal_package_manager
+  log_info "Adding NativeWind v4..."
+  pnpm add -w nativewind@latest
   log_success "Universal scaffold complete"
+}
+
+normalize_universal_package_manager() {
+  log_info "Converting Solito template to pnpm..."
+  rm -rf yarn.lock .yarn .yarnrc.yml node_modules apps/*/node_modules packages/*/node_modules
+  node -e "
+    const fs = require('fs');
+    const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    delete pkg.packageManager;
+    delete pkg.workspaces;
+    fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+  "
+  cat > pnpm-workspace.yaml <<'EOF'
+packages:
+  - 'apps/*'
+  - 'packages/*'
+EOF
+  pnpm install
 }
 
 # ============================================================================
@@ -198,16 +221,60 @@ inject_skills() {
   TEMP_DIR=$(mktemp -d)
   log_info "Cloning $STUDIO_SKILLS_REPO..."
   git clone --depth 1 --quiet "$STUDIO_SKILLS_REPO" "$TEMP_DIR/studio_skills"
+  if [ "$SKILLS_REF" != "latest" ]; then
+    git -C "$TEMP_DIR/studio_skills" fetch --depth 1 origin "refs/tags/$SKILLS_REF:refs/tags/$SKILLS_REF" ||
+      git -C "$TEMP_DIR/studio_skills" fetch --depth 1 origin "$SKILLS_REF"
+    git -C "$TEMP_DIR/studio_skills" checkout --detach "$SKILLS_REF"
+  fi
 
-  mkdir -p .claude/skills
-  for category in architecture coding business design; do
-    if [ -d "$TEMP_DIR/studio_skills/$category" ]; then
-      cp -r "$TEMP_DIR/studio_skills/$category" .claude/skills/
-      local count
-      count=$(find ".claude/skills/$category" -maxdepth 1 -type d | wc -l | tr -d ' ')
-      log_success "Injected $category/ ($((count - 1)) skills)"
+  mkdir -p .agents/skills .claude/skills
+
+  copy_skill() {
+    local skill_path="$1"
+    local skill_dir="$TEMP_DIR/studio_skills/$skill_path"
+    local skill_name
+    skill_name=$(sed -n 's/^name:[[:space:]]*//p' "$skill_dir/SKILL.md" | head -n 1 | tr -d "\"'")
+    if [ -z "$skill_name" ]; then
+      log_warn "Missing skill name: $skill_path"
+      return
     fi
-  done
+    cp -r "$skill_dir" ".agents/skills/$skill_name"
+    cp -r "$skill_dir" ".claude/skills/$skill_name"
+    log_success "Injected $skill_name"
+  }
+
+  if [ "$SKILL_PACKS" = "all" ]; then
+    while IFS= read -r skill_file; do
+      copy_skill "${skill_file#"$TEMP_DIR/studio_skills/"}"
+    done < <(find "$TEMP_DIR/studio_skills"/architecture "$TEMP_DIR/studio_skills"/coding "$TEMP_DIR/studio_skills"/business "$TEMP_DIR/studio_skills"/design -mindepth 2 -maxdepth 2 -name SKILL.md -type f | sort | sed 's|/SKILL.md$||')
+  else
+    IFS=',' read -ra packs <<< "$SKILL_PACKS"
+    for pack in "${packs[@]}"; do
+      case "$(echo "$pack" | xargs)" in
+        essential)
+          skill_paths=("architecture/manual-sdd" "architecture/antivibe" "coding/watermelon-architect" "coding/matt-pocock-typescript" "architecture/usage-limit-reducer")
+          ;;
+        agency)
+          skill_paths=("business/agentic-seo" "business/marp-slides" "business/spider-king-lead-extraction" "business/email-campaigns")
+          ;;
+        security)
+          skill_paths=("business/shannon-security" "architecture/tech-debt-audit")
+          ;;
+        *)
+          log_error "Unsupported skill pack: $pack. Use essential, agency, security, or all."
+          exit 1
+          ;;
+      esac
+
+      for skill_path in "${skill_paths[@]}"; do
+        if [ -f "$TEMP_DIR/studio_skills/$skill_path/SKILL.md" ]; then
+          copy_skill "$skill_path"
+        else
+          log_warn "Missing skill path: $skill_path"
+        fi
+      done
+    done
+  fi
 
   if [ -f "$TEMP_DIR/studio_skills/.github/skills/SKILL_TEMPLATE.md" ]; then
     cp "$TEMP_DIR/studio_skills/.github/skills/SKILL_TEMPLATE.md" .claude/skills/
@@ -221,7 +288,11 @@ install_database_and_auth() {
   log_step "Step 5/8: Installing database & auth"
 
   log_info "Adding Supabase..."
-  pnpm add @supabase/supabase-js
+  if [ "$TYPE" = "universal" ]; then
+    pnpm add -w @supabase/supabase-js
+  else
+    pnpm add @supabase/supabase-js
+  fi
   mkdir -p lib
   mkdir -p .design-staging
   touch .design-staging/.gitkeep
@@ -245,7 +316,11 @@ EOF
   log_success "Supabase configured at lib/supabase.ts"
 
   log_info "Adding Better-Auth (passkey/FaceID-ready)..."
-  pnpm add better-auth
+  if [ "$TYPE" = "universal" ]; then
+    pnpm add -w better-auth
+  else
+    pnpm add better-auth
+  fi
   cat > lib/auth.ts <<'EOF'
 import { betterAuth } from 'better-auth'
 
@@ -271,8 +346,13 @@ EOF
 
   if [ "$TYPE" = "mobile" ] || [ "$TYPE" = "universal" ]; then
     log_info "Adding WatermelonDB (offline-first)..."
-    pnpm add @nozbe/watermelondb
-    pnpm add -D @babel/plugin-proposal-decorators
+    if [ "$TYPE" = "universal" ]; then
+      pnpm add -w @nozbe/watermelondb
+      pnpm add -w -D @babel/plugin-proposal-decorators
+    else
+      pnpm add @nozbe/watermelondb
+      pnpm add -D @babel/plugin-proposal-decorators
+    fi
 
     mkdir -p model
     cat > model/schema.ts <<'EOF'
@@ -341,7 +421,11 @@ setup_guardrails() {
   log_step "Step 6/8: Installing production guardrails"
 
   log_info "Adding Husky + lint-staged + Vitest + Playwright + Sandcastle..."
-  pnpm add -D husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
+  if [ "$TYPE" = "universal" ]; then
+    pnpm add -w -D husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
+  else
+    pnpm add -D husky lint-staged vitest @playwright/test prettier @ai-hero/sandcastle
+  fi
 
   pnpm dlx husky init >/dev/null 2>&1 || true
 
@@ -354,8 +438,8 @@ setup_guardrails() {
 
 pnpm lint-staged
 
-if [ -f .claude/skills/business/shannon-security/SHANNON-PRO.md ]; then
-  echo "🛡️  Shannon-Pro: review security skill at .claude/skills/business/shannon-security/"
+if [ -f .claude/skills/shannon-security/SHANNON-PRO.md ]; then
+  echo "🛡️  Shannon-Pro: review security skill at .claude/skills/shannon-security/"
 fi
 EOF
   fi
@@ -405,7 +489,19 @@ Studio-Grade $TYPE project. Bootstrapped via kickstart.
 - Container workloads can use Docker Desktop, Docker Engine, Podman, or OrbStack.
 
 ## Skills Library
-See \`.claude/skills/\` for studio skills. Install individual skills for other agents with \`kickstart skills install <skill> --agent <agent>\`.
+See \`.agents/skills/\` for portable studio skills and \`.claude/skills/\` for the Claude Code adapter.
+
+Selected skill packs: $SKILL_PACKS
+
+## Design Staging Bridge
+\`.design-staging/\` is for raw UI exports, screenshots, and handoff files such as \`index.html\` from Open Design. Treat files in this folder as staging inputs for the Artifact-Pro Open Design skill before translating them into production components.
+
+## Production Pipeline
+Sandcastle-generated PRs must be reviewed before merge. Use CodeRabbit as the automated PR audit layer for logic integrity, regression risk, and test coverage.
+
+- Sandcastle may open or prepare implementation PRs.
+- CodeRabbit should audit those PRs before human merge.
+- Do not merge Sandcastle-generated changes until the CodeRabbit review has been read and any material logic or coverage findings are resolved.
 EOF
   fi
 

@@ -9,7 +9,7 @@ In <2 minutes, `kickstart` builds a project that:
 1. ✅ Validates your environment (pnpm, gh, Docker-compatible runtime, node ≥20, local model runtime)
 2. ✅ Scaffolds Next.js 16 / Expo SDK 55 / Turborepo+Solito 5
 3. ✅ Creates a private GitHub repo and pushes initial commit
-4. ✅ Injects 35+ studio skills into `.claude/skills/`
+4. ✅ Injects selected studio skills into `.agents/skills/` and `.claude/skills/`
 5. ✅ Installs and configures Supabase + Better-Auth (+ WatermelonDB for mobile)
 6. ✅ Wires Husky + lint-staged + Vitest + Playwright + Shannon-Pro hook
 7. ✅ Generates agent docs with local-model soft preference for routine tasks
@@ -61,7 +61,7 @@ Project name must be **lowercase, alphanumeric, with hyphens** (no spaces, under
 - Vitest (unit), Playwright (E2E)
 - Supabase JS client (`lib/supabase.ts`)
 - Better-Auth (`lib/auth.ts`)
-- All Studio Skills at `.claude/skills/`
+- Portable Studio Skills at `.agents/skills/` plus a Claude Code adapter at `.claude/skills/`
 - Agent docs with local-model guidance
 
 ### Mobile / Universal additions

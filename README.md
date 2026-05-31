@@ -4,6 +4,16 @@ Bootstrap agent-ready apps with framework scaffolding, quality gates, agent docs
 
 `kickstart` is a CLI for starting serious projects without rebuilding the same setup every time: create the app, add the core stack, wire database/auth starters, install tests and formatting, write agent instructions, and inject repeatable workflows for AI coding agents.
 
+## Features
+
+- Framework scaffolding for Next.js, Expo, and Turborepo + Solito projects.
+- Skill Pack selection so new projects install focused Studio Skills instead of the full library by default.
+- Design Staging Bridge via `.design-staging/.gitkeep` for Open Design exports and Artifact-Pro handoffs.
+- Sandcastle installed in scaffolded projects for agent-assisted implementation work.
+- Production Pipeline guidance for CodeRabbit review of Sandcastle-generated PRs before merge.
+- Supabase, Better-Auth, WatermelonDB, Husky, lint-staged, Vitest, Playwright, and Prettier setup.
+- Verified skill adapters for Claude Code, Codex, and Pi, plus a portable Agent Skills fallback.
+
 ```
    SETUP           SCAFFOLD          SKILLS          GUARDRAILS        SHIP
   ┌──────┐        ┌────────┐        ┌──────┐        ┌────────┐       ┌──────┐
@@ -24,6 +34,8 @@ Bootstrap agent-ready apps with framework scaffolding, quality gates, agent docs
 | Create a web app | `kickstart --web my-app --github skip` | Scaffolds Next.js with Studio defaults |
 | Create a mobile app | `kickstart --mobile my-app --github private` | Scaffolds Expo with mobile defaults |
 | Create a universal app | `kickstart --universal my-app --github public` | Scaffolds Turborepo + Solito |
+| Choose skill packs | `kickstart --web my-app --skill-pack essential,security` | Installs only selected Studio skill packs |
+| Install everything | `kickstart --web my-app --all-skills` | Installs the full Studio Skills library |
 | List skills | `kickstart skills list` | Reads available skills from the configured skills repo |
 | Install one skill | `kickstart skills install tdd --agent codex` | Copies that skill into the selected agent target |
 
@@ -32,7 +44,7 @@ Bootstrap agent-ready apps with framework scaffolding, quality gates, agent docs
 Install the CLI:
 
 ```bash
-npm install -g @studio-skills/kickstart
+npm install -g github:Soham407/studio-kickstart#v1.1.0
 kickstart --init
 ```
 
@@ -48,6 +60,8 @@ Or run it non-interactively:
 kickstart --web my-app --github skip
 kickstart --mobile my-mobile-app --github private
 kickstart --universal my-platform --github public
+kickstart --web lean-app --skill-pack essential,security
+kickstart --web pinned-app --skills-ref v1.1.0
 ```
 
 Use a custom skills repository:
@@ -68,12 +82,32 @@ kickstart skills list --skills https://github.com/your-org/your-skills.git
 | Offline-first | WatermelonDB starter for mobile and universal projects |
 | Quality gates | Husky, lint-staged, Vitest, Playwright, Prettier, and Sandcastle |
 | Agent docs | `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` |
-| Skills | Studio Skills injected into `.claude/skills/` by default |
+| Skills | Selected Studio Skill Packs injected into `.claude/skills/` by default |
 | Design staging | `.design-staging/.gitkeep` for Open Design exports and Artifact-Pro handoffs |
+| PR pipeline | CodeRabbit guidance for auditing Sandcastle-generated PRs before merge |
 | Local models | Optional guidance for Ollama, LM Studio, llama.cpp, Open WebUI, or another runtime |
 | Containers | Docker-compatible runtime guidance for Docker Desktop, Docker Engine, Podman, or OrbStack |
 
 Local model support is optional. If a user selects "Do not assume local models", generated agent docs tell Claude Code, Codex, Gemini CLI, or another active agent to use its configured model instead.
+
+## Skill Packs
+
+New projects install the Essential Pack by default unless another pack is selected.
+
+| Pack | Contents |
+| --- | --- |
+| Essential Pack | Manual-SDD, Antivibe, Watermelon Architect, Matt Pocock TypeScript, Usage Limit Reducer |
+| Agency Pack | Agentic SEO, Marp Slides, Spider-King lead extraction, Email Campaigns |
+| Security & Safety | Shannon-Pro, Tech Debt Audit |
+| All Skills | Complete library for projects that want every workflow available |
+
+Interactive runs use a multi-select prompt. Scripted runs can use:
+
+```bash
+kickstart --web my-app --skill-pack essential
+kickstart --web my-app --skill-pack essential,agency,security
+kickstart --web my-app --all-skills
+```
 
 ## Agent Targets
 
@@ -83,23 +117,20 @@ Skills are plain Markdown workflows. The CLI can install them into agent-specifi
 | --- | --- |
 | Claude Code | `.claude/skills/` |
 | Codex | `.agents/skills/` |
-| Gemini CLI | `.gemini/skills/` |
-| Cursor | `.cursor/skills/` |
-| OpenCode | `.opencode/skills/` |
-| Windsurf | `.windsurf/skills/` |
-| Aider | `.aider/skills/` |
-| Goose | `.goose/skills/` |
-| Pi-style local agents | `.pi/skills/` |
+| Pi | `.agents/skills/` |
+| Portable Agent Skills fallback | `.agents/skills/` |
+
+Scaffolds write flattened, standard-compliant skills to both `.agents/skills/` and `.claude/skills/`. Git-backed installs default to the immutable `v1.1.0` release tag. Pass `--skills-ref latest` to follow the repository default branch explicitly.
 
 Install examples:
 
 ```bash
 kickstart skills install tdd
 kickstart skills install tdd --agent codex
-kickstart skills install hue --agent gemini
+kickstart skills install hue --agent pi
 ```
 
-## All 25 Skills
+## All 31 Skills
 
 The generated catalog is `skills.json`. A directory becomes an installable skill when it lives under `architecture/`, `coding/`, `business/`, or `design/` and contains a `SKILL.md`.
 
@@ -107,25 +138,26 @@ The generated catalog is `skills.json`. A directory becomes an installable skill
 
 | Skill | Path | What it does |
 | --- | --- | --- |
-| `antivibe` | `architecture/antivibe-logic` | Explains AI-written code with curated resources so users understand the what and why. |
-| `caveman` | `architecture/matt-pocock-caveman` | Ultra-compressed communication mode for reducing token use. |
+| `antivibe` | `architecture/antivibe` | Explains AI-written code with curated resources so users understand the what and why. |
+| `caveman` | `architecture/caveman` | Ultra-compressed communication mode for reducing token use. |
 | `claude-plugin-powerpack` | `architecture/claude-plugin-powerpack` | Documents the recommended Claude Code plugin stack: skill-creator, superpowers, context-mode, claude-mem, frontend-design, and get-shit-done-cc. |
-| `diagnose` | `architecture/matt-pocock-diagnose` | Reproduce, minimize, hypothesize, instrument, fix, and regression-test bugs. |
-| `git-guardrails-claude-code` | `architecture/matt-pocock-git-guardrails-claude-code` | Sets up Claude Code hooks that block dangerous git commands. |
-| `grill-me` | `architecture/matt-pocock-grill-me` | Stress-tests a plan through focused questioning. |
-| `grill-with-docs` | `architecture/matt-pocock-grill-with-docs` | Challenges a plan against project docs and updates domain decisions. |
-| `improve-codebase-architecture` | `architecture/matt-pocock-improve-codebase-architecture` | Finds deeper refactoring and architecture opportunities. |
-| `migrate-to-shoehorn` | `architecture/matt-pocock-migrate-to-shoehorn` | Migrates test data from `as` assertions to `@total-typescript/shoehorn`. |
-| `prototype` | `architecture/matt-pocock-prototype` | Builds throwaway terminal or UI prototypes before committing to a design. |
-| `scaffold-exercises` | `architecture/matt-pocock-scaffold-exercises` | Creates exercise folders with problems, solutions, and explainers. |
-| `setup-matt-pocock-skills` | `architecture/matt-pocock-setup-matt-pocock-skills` | Adds repo-level agent skill docs and issue-tracker conventions. |
-| `setup-pre-commit` | `architecture/matt-pocock-setup-pre-commit` | Adds Husky pre-commit hooks with formatting, type checks, and tests. |
-| `tdd` | `architecture/matt-pocock-tdd` | Runs a red-green-refactor loop for features and bug fixes. |
-| `to-issues` | `architecture/matt-pocock-to-issues` | Breaks plans or PRDs into independently grabbable implementation issues. |
-| `to-prd` | `architecture/matt-pocock-to-prd` | Turns conversation context into a PRD and publishes it to the issue tracker. |
-| `triage` | `architecture/matt-pocock-triage` | Triage issues through role-driven workflow states. |
-| `write-a-skill` | `architecture/matt-pocock-write-a-skill` | Creates new agent skills with proper structure and progressive disclosure. |
-| `zoom-out` | `architecture/matt-pocock-zoom-out` | Maps an unfamiliar code area at a higher level. |
+| `diagnose` | `architecture/diagnose` | Reproduce, minimize, hypothesize, instrument, fix, and regression-test bugs. |
+| `git-guardrails-claude-code` | `architecture/git-guardrails-claude-code` | Sets up Claude Code hooks that block dangerous git commands. |
+| `grill-me` | `architecture/grill-me` | Stress-tests a plan through focused questioning. |
+| `grill-with-docs` | `architecture/grill-with-docs` | Challenges a plan against project docs and updates domain decisions. |
+| `improve-codebase-architecture` | `architecture/improve-codebase-architecture` | Finds deeper refactoring and architecture opportunities. |
+| `manual-sdd` | `architecture/manual-sdd` | Applies a skills-first spec-driven development workflow. |
+| `migrate-to-shoehorn` | `architecture/migrate-to-shoehorn` | Migrates test data from `as` assertions to `@total-typescript/shoehorn`. |
+| `prototype` | `architecture/prototype` | Builds throwaway terminal or UI prototypes before committing to a design. |
+| `scaffold-exercises` | `architecture/scaffold-exercises` | Creates exercise folders with problems, solutions, and explainers. |
+| `setup-matt-pocock-skills` | `architecture/setup-matt-pocock-skills` | Adds repo-level agent skill docs and issue-tracker conventions. |
+| `setup-pre-commit` | `architecture/setup-pre-commit` | Adds Husky pre-commit hooks with formatting, type checks, and tests. |
+| `tdd` | `architecture/tdd` | Runs a red-green-refactor loop for features and bug fixes. |
+| `to-issues` | `architecture/to-issues` | Breaks plans or PRDs into independently grabbable implementation issues. |
+| `to-prd` | `architecture/to-prd` | Turns conversation context into a PRD and publishes it to the issue tracker. |
+| `triage` | `architecture/triage` | Triage issues through role-driven workflow states. |
+| `write-a-skill` | `architecture/write-a-skill` | Creates new agent skills with proper structure and progressive disclosure. |
+| `zoom-out` | `architecture/zoom-out` | Maps an unfamiliar code area at a higher level. |
 | `tech-debt-audit` | `architecture/tech-debt-audit` | Produces a file-cited codebase health and architecture audit. |
 | `usage-limit-reducer` | `architecture/usage-limit-reducer` | Diagnoses token usage and applies usage-reduction rules. |
 
@@ -133,19 +165,25 @@ The generated catalog is `skills.json`. A directory becomes an installable skill
 
 | Skill | Path | What it does |
 | --- | --- | --- |
+| `agentic-seo` | `business/agentic-seo` | Audits documentation and websites for AI-agent discoverability. |
 | `email-campaigns` | `business/email-campaigns` | Designs and sends HTML email campaigns through Resend. |
-| `marp-slides` | `business/marp-pitching` | Creates MARP presentation decks with charts, themes, and visual components. |
+| `marp-slides` | `business/marp-slides` | Creates MARP presentation decks with charts, themes, and visual components. |
+| `shannon-security` | `business/shannon-security` | Guides white-box application security testing with Shannon. |
+| `spider-king-lead-extraction` | `business/spider-king-lead-extraction` | Restores web protocols for reproducible browser-independent collection. |
 
 ### Design
 
 | Skill | Path | What it does |
 | --- | --- | --- |
 | `artifact-pro-open-design` | `design/artifact-pro-open-design` | Converts Open Design JSON exports into NativeWind v4 production UI. |
-| `hue` | `design/hue-design-tokens` | Generates new design language skills from references, screenshots, or prompts. |
+| `hue` | `design/hue` | Generates new design language skills from references, screenshots, or prompts. |
 
 ### Coding
 
-`coding/` currently contains reference material, but no installable `SKILL.md` entries are present in the generated catalog yet. Add a `SKILL.md` inside a coding skill folder and run `npm run skills:catalog` to publish it into `skills.json`.
+| Skill | Path | What it does |
+| --- | --- | --- |
+| `matt-pocock-typescript` | `coding/matt-pocock-typescript` | Applies the bundled TypeScript engineering workflows. |
+| `watermelon-architect` | `coding/watermelon-architect` | Guides offline-first WatermelonDB synchronization design. |
 
 ## How Skills Work
 

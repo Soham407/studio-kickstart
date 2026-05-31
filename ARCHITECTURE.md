@@ -2,7 +2,7 @@
 
 Studio Kickstart has two parts:
 
-- The npm CLI package, published as `@studio-skills/kickstart`, which bootstraps new projects
+- The CLI package, installable from a pinned GitHub release tag and prepared for future npm publication as `@studio-skills/kickstart`, which bootstraps new projects
 - The skills library, fetched at runtime from a Git repository and injected into scaffolded projects
 
 The CLI is the main product. The skills library is one layer of the project setup, alongside framework scaffolding, auth/database setup, quality gates, and agent docs.
@@ -30,15 +30,16 @@ Skills are grouped by the type of decision they support:
 - `business/`: studio workflows such as security, SEO, pitches, demos, and outreach
 - `design/`: design tokens, UI systems, and product interface guidance
 
-Every category is copied into a new scaffolded project under `.claude/skills/<category>/` by default. Individual skills can also be installed for Codex, Gemini CLI, Cursor, OpenCode, Windsurf, Aider, Goose, and Pi-style local agents with `kickstart skills install <skill> --agent <agent>`.
+Source skills remain grouped by category. New scaffolded projects receive flattened Agent Skills directories under `.agents/skills/<skill-name>/` plus a Claude Code adapter under `.claude/skills/<skill-name>/`. Individual installs support Claude Code, Codex, Pi, and the portable `.agents/skills/` target with `kickstart skills install <skill> --agent <agent>`.
 
 ## Injection Flow
 
-1. Resolve the skills repository from `--skills`, user config, or the default repository.
-2. Clone the repo into a temporary directory with `git clone --depth 1`.
-3. Copy `architecture/`, `coding/`, `business/`, and `design/` into the target project.
-4. Copy `.github/skills/SKILL_TEMPLATE.md` when present.
-5. Remove the temporary clone.
+1. Resolve the skills repository and immutable ref from flags, user config, or defaults.
+2. Clone the repo into a temporary directory and check out the selected tag or SHA.
+3. Select pack skills or all catalog skills.
+4. Copy each skill by frontmatter name into `.agents/skills/` and `.claude/skills/`.
+5. Copy `.github/skills/SKILL_TEMPLATE.md` when present.
+6. Remove the temporary clone.
 
 ## Project Scaffold Flow
 
