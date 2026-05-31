@@ -19,7 +19,7 @@ test('prints CLI help', async () => {
 test('prints CLI version from package metadata', async () => {
   const { stdout } = await execa('node', ['bin/kickstart.js', '--version'], { cwd: process.cwd() })
 
-  assert.equal(stdout.trim(), '1.1.0')
+  assert.equal(stdout.trim(), '1.1.1')
 })
 
 test('installs a skill into a selected agent target', async () => {

@@ -44,7 +44,7 @@ Bootstrap agent-ready apps with framework scaffolding, quality gates, agent docs
 Install the CLI:
 
 ```bash
-npm install -g github:Soham407/studio-kickstart#v1.1.0
+npm install -g github:Soham407/studio-kickstart#v1.1.1
 kickstart --init
 ```
 
@@ -61,7 +61,7 @@ kickstart --web my-app --github skip
 kickstart --mobile my-mobile-app --github private
 kickstart --universal my-platform --github public
 kickstart --web lean-app --skill-pack essential,security
-kickstart --web pinned-app --skills-ref v1.1.0
+kickstart --web pinned-app --skills-ref v1.1.1
 ```
 
 Use a custom skills repository:
@@ -120,7 +120,7 @@ Skills are plain Markdown workflows. The CLI can install them into agent-specifi
 | Pi | `.agents/skills/` |
 | Portable Agent Skills fallback | `.agents/skills/` |
 
-Scaffolds write flattened, standard-compliant skills to both `.agents/skills/` and `.claude/skills/`. Git-backed installs default to the immutable `v1.1.0` release tag. Pass `--skills-ref latest` to follow the repository default branch explicitly.
+Scaffolds write flattened, standard-compliant skills to both `.agents/skills/` and `.claude/skills/`. Git-backed installs default to the immutable `v1.1.1` release tag. Pass `--skills-ref latest` to follow the repository default branch explicitly.
 
 Install examples:
 

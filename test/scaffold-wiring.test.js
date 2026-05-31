@@ -8,12 +8,18 @@ import { execa } from 'execa'
 import { DEFAULTS } from '../lib/config.js'
 import { normalizeUniversalProjectPackageManager, pnpmAddArgs } from '../lib/scaffold.js'
 import { injectSkills, normalizeSkillPacks, SKILL_PACKS } from '../lib/skills.js'
+import { validateSkillsRepo } from '../lib/wizard.js'
 
 test('uses the Studio Skills repository as the default skills source', async () => {
-  assert.equal(DEFAULTS.skillsRepo, 'https://github.com/soham407/studio_skills.git')
+  assert.equal(DEFAULTS.skillsRepo, 'https://github.com/Soham407/studio-kickstart.git')
 
   const bash = await readFile('scripts/kickstart.sh', 'utf8')
-  assert.match(bash, /STUDIO_SKILLS_REPO="https:\/\/github\.com\/soham407\/studio_skills\.git"/)
+  assert.match(bash, /STUDIO_SKILLS_REPO="https:\/\/github\.com\/Soham407\/studio-kickstart\.git"/)
+})
+
+test('accepts the wizard default skills repository', () => {
+  assert.equal(validateSkillsRepo(DEFAULTS.skillsRepo), undefined)
+  assert.match(validateSkillsRepo('not-a-git-url'), /HTTPS or SSH/)
 })
 
 test('installs Sandcastle into scaffolded projects', async () => {
@@ -44,7 +50,7 @@ test('defines anti-bloat skill packs for scaffold injection', () => {
 test('keeps the Bash fallback pinned and portable', async () => {
   const bash = await readFile('scripts/kickstart.sh', 'utf8')
 
-  assert.match(bash, /SKILLS_REF="\$\{SKILLS_REF:-v1\.1\.0\}"/)
+  assert.match(bash, /SKILLS_REF="\$\{SKILLS_REF:-v1\.1\.1\}"/)
   assert.match(bash, /mkdir -p \.agents\/skills \.claude\/skills/)
   assert.match(bash, /cp -r "\$skill_dir" "\.agents\/skills\/\$skill_name"/)
   assert.match(bash, /cp -r "\$skill_dir" "\.claude\/skills\/\$skill_name"/)

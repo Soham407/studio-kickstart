@@ -23,8 +23,8 @@ CYAN=$'\033[0;36m'
 BOLD=$'\033[1m'
 NC=$'\033[0m'
 
-STUDIO_SKILLS_REPO="https://github.com/soham407/studio_skills.git"
-SKILLS_REF="${SKILLS_REF:-v1.1.0}"
+STUDIO_SKILLS_REPO="https://github.com/Soham407/studio-kickstart.git"
+SKILLS_REF="${SKILLS_REF:-v1.1.1}"
 SKILL_PACKS="${SKILL_PACKS:-essential}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TEMPLATES_DIR="$SCRIPT_DIR/templates"
