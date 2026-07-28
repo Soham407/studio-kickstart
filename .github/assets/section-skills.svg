@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 140" width="1200" height="140">
+  <title>Skills Library</title>
+  <desc>Complete catalog of 31 installable agent workflow skills</desc>
+  <style>
+    .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 28px; font-weight: 700; fill: #E6EDF3; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; fill: #8B949E; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="140" fill="#0D1117" rx="12" />
+
+  <!-- Accent line -->
+  <line x1="136" y1="110" x2="600" y2="110" stroke="#58A6FF" stroke-opacity="0.3" stroke-width="2" />
+
+  <!-- Pipeline connector motif (right) -->
+  <g id="pipeline-connector" transform="translate(1000, 70)">
+    <path d="M0,0 L80,0" stroke="#30363D" stroke-width="2" />
+    <circle cx="0" cy="0" r="6" fill="#161B22" stroke="#30363D" stroke-width="2" />
+    <rect x="34" y="-6" width="12" height="12" fill="#161B22" stroke="#30363D" stroke-width="2" rx="2" />
+    <circle cx="80" cy="0" r="6" fill="#161B22" stroke="#30363D" stroke-width="2" />
+  </g>
+
+  <!-- Icon: Document -->
+  <g id="icon" transform="translate(64, 46)">
+    <rect width="48" height="48" rx="8" fill="#161B22" stroke="#30363D" stroke-width="2" />
+    <path d="M12,14 L36,14 M12,22 L30,22 M12,30 L36,30 M12,38 L24,38" stroke="#58A6FF" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- Text -->
+  <g id="text-block">
+    <text x="136" y="74" class="title">Skills Library</text>
+    <text x="136" y="96" class="subtitle">31 installable agent workflows across architecture, coding, business, and design</text>
+  </g>
+</svg>
