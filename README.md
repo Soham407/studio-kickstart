@@ -1,110 +1,136 @@
-# Studio Kickstart
+<p align="center">
+  <img src="./.github/assets/hero.svg" width="100%" alt="Studio Kickstart — CLI project bootstrapper that scaffolds agent-ready apps with frameworks, skills, MCP servers, and quality gates">
+</p>
 
-Bootstrap agent-ready apps with framework scaffolding, quality gates, agent docs, and reusable Studio Skills.
+<p align="center">
+  <a href="https://www.npmjs.com/package/studio-kickstart"><img src="https://img.shields.io/npm/v/studio-kickstart?color=58A6FF&labelColor=161B22&style=flat-square" alt="npm version"></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D20-3FB950?labelColor=161B22&style=flat-square" alt="Node.js >= 20">
+  <img src="https://img.shields.io/badge/license-MIT-8B949E?labelColor=161B22&style=flat-square" alt="MIT License">
+  <img src="https://img.shields.io/badge/skills-31-58A6FF?labelColor=161B22&style=flat-square" alt="31 Skills">
+</p>
 
-`kickstart` is a CLI for starting serious projects without rebuilding the same setup every time: create the app, add the core stack, wire database/auth starters, install tests and formatting, write agent instructions, inject repeatable workflows for AI coding agents, and keep skills in sync as the library evolves.
-
-## Features
-
-- Framework scaffolding for Next.js, Expo, Turborepo + Solito, and bare projects.
-- **Skills Sync** — every project gets a `.studio-skills.json` lockfile; `kickstart skills sync` re-applies skills from it; `--upgrade` bumps to the latest release.
-- **MCP Servers** — scaffolded projects get Supabase and GitHub MCP pre-wired in `.claude/settings.json`. Pass `--mcp none` to opt out.
-- Skill Pack selection so new projects install focused Studio Skills instead of the full library by default.
-- Design Staging Bridge via `.design-staging/.gitkeep` for Open Design exports and Artifact-Pro handoffs.
-- Sandcastle installed in scaffolded projects for agent-assisted implementation work.
-- Production Pipeline guidance for CodeRabbit review of Sandcastle-generated PRs before merge.
-- Supabase, Better-Auth, WatermelonDB, Husky, lint-staged, Vitest, Playwright, and Prettier setup.
-- Verified skill adapters for Claude Code, Codex, and Pi, plus a portable Agent Skills fallback.
+One CLI to scaffold a complete project — framework, database, auth, agent skills, MCP servers, quality gates, and docs — so you never rebuild the same setup twice.
 
 ```
-   SETUP           SCAFFOLD          SKILLS          GUARDRAILS        SHIP
-  ┌──────┐        ┌────────┐        ┌──────┐        ┌────────┐       ┌──────┐
-  │ Init │  ───▶  │ App    │  ───▶  │ Agent│  ───▶  │ Tests  │ ───▶  │ Repo │
-  │ Config        │ Stack  │        │ Work │        │ Hooks  │       │ Push │
-  └──────┘        └────────┘        └──────┘        └────────┘       └──────┘
-  --init          --web             skills install  pre-commit       --github
-                  --mobile          skills sync
-                  --universal
-                  --other
+kickstart --web my-app
 ```
 
-## Commands
+That single command creates a Next.js app with Supabase, Better-Auth, Husky, Vitest, Playwright, Prettier, Sandcastle, pre-wired MCP servers, and agent instructions for Claude Code, Codex, and Gemini CLI.
 
-| What you are doing | Command | Result |
-| --- | --- | --- |
-| Configure the CLI | `kickstart --init` | Saves defaults in `~/.studio-skills/config.json` |
-| Create a guided project | `kickstart` | Prompts for stack, name, local model mode, and GitHub mode |
-| Create a web app | `kickstart --web my-app --github skip` | Scaffolds Next.js with Studio defaults |
-| Create a mobile app | `kickstart --mobile my-app --github private` | Scaffolds Expo with mobile defaults |
-| Create a universal app | `kickstart --universal my-app --github public` | Scaffolds Turborepo + Solito |
-| Create a bare project | `kickstart --other my-app --github skip` | Git init + agent setup, bring your own framework |
-| Choose skill packs | `kickstart --web my-app --skill-pack essential,security` | Installs only selected Studio skill packs |
-| Install everything | `kickstart --web my-app --all-skills` | Installs the full Studio Skills library |
-| Choose MCP servers | `kickstart --web my-app --mcp supabase,github,filesystem` | Wires selected MCP servers into `.claude/settings.json` |
-| Skip MCP wiring | `kickstart --web my-app --mcp none` | Skips MCP config entirely |
-| List skills | `kickstart skills list` | Reads available skills from the configured skills repo |
-| Install one skill | `kickstart skills install tdd --agent codex` | Copies that skill into the selected agent target |
-| Re-apply skills | `kickstart skills sync` | Re-copies skills from the locked ref in `.studio-skills.json` |
-| Upgrade skills | `kickstart skills sync --upgrade` | Fetches the latest release tag and upgrades all installed skills |
+---
 
-## Quick Start
+<p align="center">
+  <img src="./.github/assets/section-quickstart.svg" width="100%" alt="Quick Start — From install to first project in 60 seconds">
+</p>
 
-Install the CLI:
+### Install
 
 ```bash
 npm install -g studio-kickstart
 kickstart --init
 ```
 
-Create a project interactively:
+### Create a project
+
+**Interactive** — prompts for stack, name, local model mode, and GitHub mode:
 
 ```bash
 kickstart
 ```
 
-Or run it non-interactively:
+**Scripted** — specify everything up front:
 
 ```bash
 kickstart --web my-app --github skip
 kickstart --mobile my-mobile-app --github private
 kickstart --universal my-platform --github public
 kickstart --other my-app --github skip
-kickstart --web lean-app --skill-pack essential,security
-kickstart --web my-app --mcp none
-kickstart --web pinned-app --skills-ref v1.2.0
 ```
 
-Use a custom skills repository:
+### Choose what gets installed
 
 ```bash
+# Select specific skill packs
+kickstart --web my-app --skill-pack essential,security
+
+# Install the full 31-skill library
+kickstart --web my-app --all-skills
+
+# Wire specific MCP servers (or skip them)
+kickstart --web my-app --mcp supabase,github,filesystem
+kickstart --web my-app --mcp none
+
+# Pin skills to a specific release
+kickstart --web my-app --skills-ref v1.2.0
+
+# Use a custom skills repository
 kickstart --skills https://github.com/your-org/your-skills.git --web custom-app
-kickstart skills list --skills https://github.com/your-org/your-skills.git
 ```
 
-## What Gets Set Up
+---
 
-| Area | Included |
+<p align="center">
+  <img src="./.github/assets/section-features.svg" width="100%" alt="What Gets Set Up — Frameworks, skills, MCP servers, and guardrails all wired together">
+</p>
+
+Every scaffolded project includes a consistent, production-grade setup:
+
+| Layer | What you get |
 | --- | --- |
-| Framework | Next.js, Expo, Turborepo + Solito, or bare (git init + pnpm init) |
-| Repository | Optional GitHub repo creation through `gh` |
-| Database | Supabase client starter |
-| Auth | Better-Auth starter |
-| Offline-first | WatermelonDB starter for mobile and universal projects |
-| Quality gates | Husky, lint-staged, Vitest, Playwright, Prettier, and Sandcastle |
-| Agent docs | `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` |
-| Skills | Selected Studio Skill Packs injected into `.claude/skills/` and `.agents/skills/` |
-| Skills lockfile | `.studio-skills.json` records the repo URL, ref, packs, and installed skills |
-| MCP servers | `.claude/settings.json` pre-wired with Supabase and GitHub MCP (default) |
-| Design staging | `.design-staging/.gitkeep` for Open Design exports and Artifact-Pro handoffs |
-| PR pipeline | CodeRabbit guidance for auditing Sandcastle-generated PRs before merge |
-| Local models | Optional guidance for Ollama, LM Studio, llama.cpp, Open WebUI, or another runtime |
-| Containers | Docker-compatible runtime guidance for Docker Desktop, Docker Engine, Podman, or OrbStack |
+| **Framework** | Next.js, Expo, Turborepo + Solito, or bare (git init + pnpm init) |
+| **Database** | Supabase client starter |
+| **Auth** | Better-Auth starter |
+| **Offline-first** | WatermelonDB starter (mobile and universal projects) |
+| **Quality gates** | Husky, lint-staged, Vitest, Playwright, Prettier, Sandcastle |
+| **Agent docs** | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` |
+| **Skills** | Selected Studio Skill Packs in `.claude/skills/` and `.agents/skills/` |
+| **Skills lockfile** | `.studio-skills.json` — tracks repo URL, ref, packs, and installed skills |
+| **MCP servers** | `.claude/settings.json` pre-wired with Supabase and GitHub MCP |
+| **Design staging** | `.design-staging/.gitkeep` for Open Design exports and Artifact-Pro handoffs |
+| **PR pipeline** | CodeRabbit guidance for auditing Sandcastle-generated PRs |
+| **Local models** | Optional guidance for Ollama, LM Studio, llama.cpp, Open WebUI |
+| **Containers** | Docker Desktop, Podman, or OrbStack guidance |
 
-Local model support is optional. If a user selects "Do not assume local models", generated agent docs tell Claude Code, Codex, Gemini CLI, or another active agent to use its configured model instead.
+<p align="center">
+  <img src="./.github/assets/workflow.svg" width="100%" alt="Nine-step project scaffold flow — validate tools, create framework, GitHub repo, inject skills, wire MCP, DB and auth, guardrails, agent docs, commit and push">
+</p>
 
-## Skills Sync
+---
 
-Every `kickstart` scaffold and `kickstart skills install` writes a `.studio-skills.json` lockfile to the project root:
+### Skill Packs
+
+New projects install the **Essential Pack** by default:
+
+| Pack | Contents |
+| --- | --- |
+| **Essential** | Manual-SDD, Antivibe, Watermelon Architect, Matt Pocock TypeScript, Usage Limit Reducer |
+| **Agency** | Agentic SEO, Marp Slides, Spider-King lead extraction, Email Campaigns |
+| **Security & Safety** | Shannon-Pro, Tech Debt Audit |
+| **All Skills** | Complete library — every workflow available |
+
+```bash
+kickstart --web my-app --skill-pack essential
+kickstart --web my-app --skill-pack essential,agency,security
+kickstart --web my-app --all-skills
+```
+
+### Skills Sync
+
+Every scaffold writes a `.studio-skills.json` lockfile. Re-apply or upgrade skills anytime:
+
+```bash
+# Re-apply skills from lockfile (safe, idempotent)
+kickstart skills sync
+
+# Upgrade to the latest release tag
+kickstart skills sync --upgrade
+
+# Run from any subdirectory
+kickstart skills sync --project /path/to/my-app
+```
+
+<details>
+<summary>Example lockfile</summary>
 
 ```json
 {
@@ -121,136 +147,107 @@ Every `kickstart` scaffold and `kickstart skills install` writes a `.studio-skil
 }
 ```
 
-Re-apply skills from the lockfile (safe, idempotent):
+</details>
 
-```bash
-kickstart skills sync
-```
+### MCP Servers
 
-Upgrade to the latest release tag in the skills repo:
-
-```bash
-kickstart skills sync --upgrade
-```
-
-Run from any subdirectory with `--project`:
-
-```bash
-kickstart skills sync --project /path/to/my-app
-```
-
-## MCP Servers
-
-Scaffolded projects get `.claude/settings.json` pre-wired with Supabase and GitHub MCP servers. Replace the placeholder values before use:
+Scaffolded projects get `.claude/settings.json` pre-wired with Supabase and GitHub MCP. Replace the placeholder tokens before use:
 
 | Server | Token |
 | --- | --- |
-| `supabase` | `SUPABASE_ACCESS_TOKEN` — create at [supabase.com/dashboard/account/tokens](https://supabase.com/dashboard/account/tokens) |
-| `github` | `GITHUB_TOKEN` — create at [github.com/settings/tokens](https://github.com/settings/tokens) |
+| `supabase` | `SUPABASE_ACCESS_TOKEN` — [create at supabase.com](https://supabase.com/dashboard/account/tokens) |
+| `github` | `GITHUB_TOKEN` — [create at github.com](https://github.com/settings/tokens) |
+| `filesystem` | No token required |
 
-Available servers: `supabase`, `github`, `filesystem`.
+### Agent Targets
 
-```bash
-kickstart --web my-app --mcp supabase,github,filesystem
-kickstart --web my-app --mcp none
-```
-
-## Skill Packs
-
-New projects install the Essential Pack by default unless another pack is selected.
-
-| Pack | Contents |
-| --- | --- |
-| Essential Pack | Manual-SDD, Antivibe, Watermelon Architect, Matt Pocock TypeScript, Usage Limit Reducer |
-| Agency Pack | Agentic SEO, Marp Slides, Spider-King lead extraction, Email Campaigns |
-| Security & Safety | Shannon-Pro, Tech Debt Audit |
-| All Skills | Complete library for projects that want every workflow available |
-
-Interactive runs use a multi-select prompt. Scripted runs can use:
-
-```bash
-kickstart --web my-app --skill-pack essential
-kickstart --web my-app --skill-pack essential,agency,security
-kickstart --web my-app --all-skills
-```
-
-## Agent Targets
-
-Skills are plain Markdown workflows. The CLI can install them into agent-specific discovery paths:
+Skills install into agent-specific discovery paths:
 
 | Agent | Target |
 | --- | --- |
 | Claude Code | `.claude/skills/` |
 | Codex | `.agents/skills/` |
 | Pi | `.agents/skills/` |
-| Portable Agent Skills fallback | `.agents/skills/` |
+| Portable fallback | `.agents/skills/` |
 
-Scaffolds write flattened, standard-compliant skills to both `.agents/skills/` and `.claude/skills/`. Git-backed installs default to the immutable `v1.2.0` release tag. Pass `--skills-ref latest` to follow the repository default branch explicitly.
+---
 
-Install examples:
+<p align="center">
+  <img src="./.github/assets/section-skills.svg" width="100%" alt="Skills Library — 31 installable agent workflows across architecture, coding, business, and design">
+</p>
 
-```bash
-kickstart skills install tdd
-kickstart skills install tdd --agent codex
-kickstart skills install hue --agent pi
-```
+Install individual skills with `kickstart skills install <name>`:
 
-## All 31 Skills
+<details>
+<summary><b>Architecture</b> — 22 skills</summary>
 
-The generated catalog is `skills.json`. A directory becomes an installable skill when it lives under `architecture/`, `coding/`, `business/`, or `design/` and contains a `SKILL.md`.
+| Skill | What it does |
+| --- | --- |
+| `antivibe` | Explains AI-written code with curated resources |
+| `caveman` | Ultra-compressed communication mode for reducing token use |
+| `claude-plugin-powerpack` | Documents the recommended Claude Code plugin stack |
+| `diagnose` | Reproduce, minimize, hypothesize, instrument, fix, and regression-test bugs |
+| `git-guardrails-claude-code` | Sets up Claude Code hooks that block dangerous git commands |
+| `grill-me` | Stress-tests a plan through focused questioning |
+| `grill-with-docs` | Challenges a plan against project docs |
+| `improve-codebase-architecture` | Finds deeper refactoring and architecture opportunities |
+| `manual-sdd` | Applies a skills-first spec-driven development workflow |
+| `migrate-to-shoehorn` | Migrates test data from `as` assertions to shoehorn |
+| `prototype` | Builds throwaway terminal or UI prototypes |
+| `scaffold-exercises` | Creates exercise folders with problems, solutions, and explainers |
+| `setup-matt-pocock-skills` | Adds repo-level agent skill docs and issue-tracker conventions |
+| `setup-pre-commit` | Adds Husky pre-commit hooks with formatting and tests |
+| `tdd` | Runs a red-green-refactor loop for features and bug fixes |
+| `to-issues` | Breaks plans or PRDs into implementation issues |
+| `to-prd` | Turns conversation context into a PRD |
+| `triage` | Triage issues through role-driven workflow states |
+| `write-a-skill` | Creates new agent skills with proper structure |
+| `zoom-out` | Maps an unfamiliar code area at a higher level |
+| `tech-debt-audit` | Produces a file-cited codebase health and architecture audit |
+| `usage-limit-reducer` | Diagnoses token usage and applies usage-reduction rules |
 
-### Architecture
+</details>
 
-| Skill | Path | What it does |
-| --- | --- | --- |
-| `antivibe` | `architecture/antivibe` | Explains AI-written code with curated resources so users understand the what and why. |
-| `caveman` | `architecture/caveman` | Ultra-compressed communication mode for reducing token use. |
-| `claude-plugin-powerpack` | `architecture/claude-plugin-powerpack` | Documents the recommended Claude Code plugin stack: skill-creator, superpowers, context-mode, claude-mem, frontend-design, and get-shit-done-cc. |
-| `diagnose` | `architecture/diagnose` | Reproduce, minimize, hypothesize, instrument, fix, and regression-test bugs. |
-| `git-guardrails-claude-code` | `architecture/git-guardrails-claude-code` | Sets up Claude Code hooks that block dangerous git commands. |
-| `grill-me` | `architecture/grill-me` | Stress-tests a plan through focused questioning. |
-| `grill-with-docs` | `architecture/grill-with-docs` | Challenges a plan against project docs and updates domain decisions. |
-| `improve-codebase-architecture` | `architecture/improve-codebase-architecture` | Finds deeper refactoring and architecture opportunities. |
-| `manual-sdd` | `architecture/manual-sdd` | Applies a skills-first spec-driven development workflow. |
-| `migrate-to-shoehorn` | `architecture/migrate-to-shoehorn` | Migrates test data from `as` assertions to `@total-typescript/shoehorn`. |
-| `prototype` | `architecture/prototype` | Builds throwaway terminal or UI prototypes before committing to a design. |
-| `scaffold-exercises` | `architecture/scaffold-exercises` | Creates exercise folders with problems, solutions, and explainers. |
-| `setup-matt-pocock-skills` | `architecture/setup-matt-pocock-skills` | Adds repo-level agent skill docs and issue-tracker conventions. |
-| `setup-pre-commit` | `architecture/setup-pre-commit` | Adds Husky pre-commit hooks with formatting, type checks, and tests. |
-| `tdd` | `architecture/tdd` | Runs a red-green-refactor loop for features and bug fixes. |
-| `to-issues` | `architecture/to-issues` | Breaks plans or PRDs into independently grabbable implementation issues. |
-| `to-prd` | `architecture/to-prd` | Turns conversation context into a PRD and publishes it to the issue tracker. |
-| `triage` | `architecture/triage` | Triage issues through role-driven workflow states. |
-| `write-a-skill` | `architecture/write-a-skill` | Creates new agent skills with proper structure and progressive disclosure. |
-| `zoom-out` | `architecture/zoom-out` | Maps an unfamiliar code area at a higher level. |
-| `tech-debt-audit` | `architecture/tech-debt-audit` | Produces a file-cited codebase health and architecture audit. |
-| `usage-limit-reducer` | `architecture/usage-limit-reducer` | Diagnoses token usage and applies usage-reduction rules. |
+<details>
+<summary><b>Business</b> — 5 skills</summary>
 
-### Business
+| Skill | What it does |
+| --- | --- |
+| `agentic-seo` | Audits documentation and websites for AI-agent discoverability |
+| `email-campaigns` | Designs and sends HTML email campaigns through Resend |
+| `marp-slides` | Creates MARP presentation decks with charts and themes |
+| `shannon-security` | Guides white-box application security testing |
+| `spider-king-lead-extraction` | Browser-independent lead collection |
 
-| Skill | Path | What it does |
-| --- | --- | --- |
-| `agentic-seo` | `business/agentic-seo` | Audits documentation and websites for AI-agent discoverability. |
-| `email-campaigns` | `business/email-campaigns` | Designs and sends HTML email campaigns through Resend. |
-| `marp-slides` | `business/marp-slides` | Creates MARP presentation decks with charts, themes, and visual components. |
-| `shannon-security` | `business/shannon-security` | Guides white-box application security testing with Shannon. |
-| `spider-king-lead-extraction` | `business/spider-king-lead-extraction` | Restores web protocols for reproducible browser-independent collection. |
+</details>
 
-### Design
+<details>
+<summary><b>Design</b> — 2 skills</summary>
 
-| Skill | Path | What it does |
-| --- | --- | --- |
-| `artifact-pro-open-design` | `design/artifact-pro-open-design` | Converts Open Design JSON exports into NativeWind v4 production UI. |
-| `hue` | `design/hue` | Generates new design language skills from references, screenshots, or prompts. |
+| Skill | What it does |
+| --- | --- |
+| `artifact-pro-open-design` | Converts Open Design JSON exports into NativeWind v4 UI |
+| `hue` | Generates new design language skills from references |
 
-### Coding
+</details>
 
-| Skill | Path | What it does |
-| --- | --- | --- |
-| `matt-pocock-typescript` | `coding/matt-pocock-typescript` | Applies the bundled TypeScript engineering workflows. |
-| `watermelon-architect` | `coding/watermelon-architect` | Guides offline-first WatermelonDB synchronization design. |
+<details>
+<summary><b>Coding</b> — 2 skills</summary>
 
-## How Skills Work
+| Skill | What it does |
+| --- | --- |
+| `matt-pocock-typescript` | Applies bundled TypeScript engineering workflows |
+| `watermelon-architect` | Guides offline-first WatermelonDB synchronization design |
+
+</details>
+
+---
+
+<p align="center">
+  <img src="./.github/assets/section-architecture.svg" width="100%" alt="Architecture — CLI modules, skills sync, and project scaffold flow">
+</p>
+
+### How Skills Work
 
 Every installable skill follows the same shape:
 
@@ -264,95 +261,79 @@ skill-folder/
     └── verification: evidence required before the work is done
 ```
 
-Design principles:
+Design principles: workflow over prose, progressive disclosure, clear triggers, verifiable output.
 
-- Workflow over prose. A skill should tell the agent what to do, not just describe a topic.
-- Progressive disclosure. Keep `SKILL.md` small enough to load first; put heavier references in nearby files.
-- Clear triggers. The description should say when the skill applies.
-- Verifiable output. The skill should define what proof is needed: tests, docs, screenshots, commands, or file changes.
+### CLI Commands
 
-## Sandcastle Status
+| Command | Result |
+| --- | --- |
+| `kickstart --init` | Saves defaults in `~/.studio-skills/config.json` |
+| `kickstart` | Guided interactive setup |
+| `kickstart --web my-app` | Scaffolds Next.js with Studio defaults |
+| `kickstart --mobile my-app` | Scaffolds Expo with mobile defaults |
+| `kickstart --universal my-app` | Scaffolds Turborepo + Solito |
+| `kickstart --other my-app` | Git init + agent setup, bring your own framework |
+| `kickstart skills list` | Lists available skills from the configured repo |
+| `kickstart skills install tdd` | Installs a single skill |
+| `kickstart skills sync` | Re-applies skills from lockfile |
+| `kickstart skills sync --upgrade` | Upgrades to the latest release |
 
-Sandcastle is wired into scaffolded projects.
-
-Matt Pocock's Sandcastle is a TypeScript library for orchestrating coding agents in isolated sandboxes with `sandcastle.run()`. Its current quick start is:
-
-```bash
-npm install --save-dev @ai-hero/sandcastle
-npx sandcastle init
-```
-
-`kickstart` installs `@ai-hero/sandcastle` as a dev dependency in generated projects alongside Husky, lint-staged, Vitest, Playwright, and Prettier. The CLI package itself does not depend on Sandcastle at runtime; Sandcastle belongs in the project being scaffolded, where it can run AFK agent orchestration, review pipelines, and sandboxed parallel work.
-
-## Project Structure
+### Project Structure
 
 ```
-Studio_Skills/
-├── bin/
-│   └── kickstart.js              # CLI command definitions
+studio-kickstart/
+├── bin/kickstart.js            # CLI entry point and flag parsing
 ├── lib/
-│   ├── scaffold.js               # Project bootstrap orchestration
-│   ├── skills.js                 # Skill clone/copy/install/sync logic
-│   ├── mcp.js                    # MCP server registry and config writing
-│   ├── skill-catalog.js          # Skill discovery and linting
-│   ├── wizard.js                 # First-time setup wizard
-│   ├── config.js                 # ~/.studio-skills/config.json
-│   └── updater.js                # Best-effort npm update checks
-├── scripts/
-│   ├── generate-skills-catalog.js
-│   └── lint-skills.js
-├── architecture/                 # Installable engineering workflow skills
-├── coding/                       # Coding references and future coding skills
-├── business/                     # Studio operation skills
-├── design/                       # Design system skills
-├── .design-staging/              # Created in scaffolded projects for Open Design exports
-├── test/                         # Node test runner tests
-├── skills.json                   # Generated public skill catalog
-├── ARCHITECTURE.md
-└── README.md
+│   ├── scaffold.js             # Project bootstrap orchestration
+│   ├── skills.js               # Skill clone/copy/install/sync logic
+│   ├── mcp.js                  # MCP server registry and config writing
+│   ├── skill-catalog.js        # Skill discovery and linting
+│   ├── wizard.js               # First-time setup wizard
+│   ├── config.js               # ~/.studio-skills/config.json
+│   └── updater.js              # npm update checks
+├── architecture/               # 22 engineering workflow skills
+├── coding/                     # 2 coding skills
+├── business/                   # 5 business operation skills
+├── design/                     # 2 design system skills
+├── scripts/                    # Catalog generation and skill linting
+├── test/                       # Node test runner tests
+└── skills.json                 # Generated public skill catalog
 ```
 
-## Requirements
+---
 
-- Node.js 20+
-- pnpm
-- GitHub CLI authenticated with `gh auth login` when using `--github private` or `--github public`
-- Docker-compatible runtime optional for container workloads
-- Local model runtime optional
+### Requirements
 
-## Local Development
+- **Node.js 20+** and **pnpm**
+- **GitHub CLI** authenticated with `gh auth login` (when using `--github private` or `--github public`)
+- Docker-compatible runtime (optional, for container workloads)
+- Local model runtime (optional)
+
+### Local Development
 
 ```bash
 npm install
 npm test
 npm run skills:lint
 npm run skills:catalog
-npm pack --dry-run
+npm run check           # lint + test + pack dry-run
 ```
 
-Run all checks:
+### Similar Projects
 
-```bash
-npm run check
-```
+Studio Kickstart combines project scaffolding, agent skills, and guardrails into one bootstrapper:
 
-## Similar Projects
+- **Framework scaffolding** — `create-next-app`, `create-expo-app`, Solito starters
+- **Opinionated setup** — `create-t3-app`
+- **Agent skill packaging** — `anthropics/skills`, `openai/skills`, `addyosmani/agent-skills`
+- **Agent workflows** — `obra/superpowers`
+- **Sandboxed orchestration** — Matt Pocock's `sandcastle`
+- **Agent environments** — Aider, OpenCode, Gemini CLI, Cline, Roo Code, Continue, Cursor, Windsurf
 
-Studio Kickstart sits between framework scaffolding, agent skills, and project guardrails:
-
-- `create-next-app`, `create-expo-app`, and Solito starters for framework scaffolding
-- `create-t3-app` for opinionated full-stack setup
-- `anthropics/skills`, `openai/skills`, and `addyosmani/agent-skills` for agent skill packaging
-- `obra/superpowers` for workflow-oriented agent skills
-- Matt Pocock's `sandcastle` for sandboxed coding-agent orchestration
-- Aider, OpenCode, Gemini CLI, Cline, Roo Code, Continue, Cursor, and Windsurf for agent workflow expectations
-
-The intended differentiation is the combination: project scaffolding, tool setup, agent docs, reusable skills with sync, MCP wiring, and future sandboxed agent orchestration from one guided bootstrapper.
-
-## Contributing
+### Contributing
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for skill structure and pull request expectations, and [ARCHITECTURE.md](ARCHITECTURE.md) for how the CLI and skills library fit together.
 
-## License
+### License
 
 MIT
